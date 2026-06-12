@@ -1,0 +1,1 @@
+ALTER TABLE public.caisses ADD COLUMN IF NOT EXISTS auto_close_at TIMESTAMPTZ;

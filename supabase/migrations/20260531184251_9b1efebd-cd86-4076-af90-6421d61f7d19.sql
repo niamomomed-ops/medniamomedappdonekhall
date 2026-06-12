@@ -1,0 +1,1 @@
+ALTER TABLE public.commandes ADD COLUMN IF NOT EXISTS casse_by uuid;

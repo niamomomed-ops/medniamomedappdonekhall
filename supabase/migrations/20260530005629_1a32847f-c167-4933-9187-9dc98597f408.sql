@@ -1,0 +1,1 @@
+ALTER TABLE public.caisses ALTER COLUMN label SET DEFAULT ('Caisse ' || to_char(now(), 'YYYY-MM-DD HH24:MI'));
