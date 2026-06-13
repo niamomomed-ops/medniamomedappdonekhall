@@ -61,11 +61,33 @@ export function NotificationBell() {
 
   const allMut = useMutation({
     mutationFn: () => markAll(),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
+    onMutate: async () => {
+      await qc.cancelQueries({ queryKey: ["notifications"] });
+      const prev = qc.getQueryData<NotificationRow[]>(["notifications"]);
+      qc.setQueryData<NotificationRow[]>(["notifications"], (old) =>
+        (old ?? []).map((n) => ({ ...n, read: true })),
+      );
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["notifications"], ctx.prev);
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
   });
   const oneMut = useMutation({
     mutationFn: (id: string) => markOne({ data: { id } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
+    onMutate: async (id: string) => {
+      await qc.cancelQueries({ queryKey: ["notifications"] });
+      const prev = qc.getQueryData<NotificationRow[]>(["notifications"]);
+      qc.setQueryData<NotificationRow[]>(["notifications"], (old) =>
+        (old ?? []).map((n) => (n.id === id ? { ...n, read: true } : n)),
+      );
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["notifications"], ctx.prev);
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
   });
 
   const openCmd = (n: NotificationRow) => {

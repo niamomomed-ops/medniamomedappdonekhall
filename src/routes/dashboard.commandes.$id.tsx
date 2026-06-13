@@ -367,15 +367,15 @@ function CommandeDetailPage() {
       {isLoading || !cmd ? (
         <div className="text-muted-foreground">Chargement…</div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
           {/* Main column */}
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-6">
             <Card className={cmd.urgent && cmd.status !== "livree" ? "border-red-500/60 bg-red-500/5" : ""}>
-              <CardContent className="p-6">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
+              <CardContent className="p-4 sm:p-6">
+                <div className="grid grid-cols-[minmax(0,1fr)] gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-mono text-sm text-muted-foreground">
+                      <p className="min-w-0 truncate font-mono text-sm text-muted-foreground">
                         {cmd.numero_commande ?? "—"}
                       </p>
                       {cmd.urgent && cmd.status !== "livree" && (
@@ -400,8 +400,8 @@ function CommandeDetailPage() {
                         Basée sur {cmd.based_on.numero_commande ?? "la commande d'origine"}
                       </button>
                     )}
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <h2 className="text-2xl font-semibold">
+                    <div className="mt-1 flex min-w-0 flex-wrap items-center gap-2">
+                      <h2 className="min-w-0 max-w-full break-words text-xl font-semibold sm:text-2xl">
                         {cmd.clients?.nom_complet ?? "—"}
                       </h2>
                       {cmd.client_id && (
@@ -476,7 +476,7 @@ function CommandeDetailPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-1.5">
+                  <div className="flex min-w-0 flex-col items-stretch gap-1.5 sm:items-end">
                     <span
                       className={`inline-flex rounded-full border px-3 py-1 text-sm font-medium ${STATUS_COLORS[cmd.status as CommandeStatus]}`}
                     >
@@ -530,7 +530,7 @@ function CommandeDetailPage() {
 
             {cmd.casse_eye && cmd.casse_at && !cmd.casse_resolved_at && (
               <Card className="border-red-500/60 bg-red-500/5">
-                <CardContent className="space-y-3 p-6">
+                <CardContent className="space-y-3 p-4 sm:p-6">
                   <div className="flex items-start gap-2">
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
                     <div className="flex-1 space-y-2">
@@ -621,7 +621,7 @@ function CommandeDetailPage() {
 
             {showMontureAlert && (
               <Card className="border-amber-500/60 bg-amber-500/5">
-                <CardContent className="space-y-3 p-6">
+                <CardContent className="space-y-3 p-4 sm:p-6">
                   <div className="flex items-start gap-2 text-sm">
                     <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
                     <div>
@@ -681,7 +681,7 @@ function CommandeDetailPage() {
                     : "border-amber-500/60 bg-amber-500/5"
                 }
               >
-                <CardContent className="space-y-3 p-6">
+                <CardContent className="space-y-3 p-4 sm:p-6">
                   <div className="flex items-start gap-2 text-sm">
                     <AlertTriangle
                       className={`mt-0.5 h-4 w-4 shrink-0 ${
@@ -746,7 +746,7 @@ function CommandeDetailPage() {
 
 
             <Card className="bg-muted/30">
-              <CardContent className="grid gap-5 p-6 md:grid-cols-2">
+              <CardContent className="grid min-w-0 gap-3 p-4 sm:gap-5 sm:p-6 md:grid-cols-2">
                 <ProminentInfo label="Date de livraison" value={fmtDate(cmd.date_livraison)} />
                 <ProminentInfo label="Fournisseur" value={cmd.fournisseurs?.nom ?? "—"} />
                 {cmd.type === "lentilles" ? (
@@ -784,7 +784,7 @@ function CommandeDetailPage() {
               const showAddition = cmd.type === "progressif" || cmd.type === "double_foyer";
               return (
               <Card id="correction-snapshot">
-                <CardContent className="p-6">
+                <CardContent className="p-4 sm:p-6">
                   <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                       Correction (snapshot commande)
@@ -901,7 +901,7 @@ function CommandeDetailPage() {
             {cmd.type === "progressif" && cmd.progressive && (
 
               <Card>
-                <CardContent className="p-6">
+                <CardContent className="p-4 sm:p-6">
                   <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                     Mesures progressif
                   </h3>
@@ -934,7 +934,7 @@ function CommandeDetailPage() {
 
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <h3 className="mb-4 flex items-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                   <HistoryIcon className="mr-2 h-4 w-4" /> Historique
                 </h3>
@@ -1051,10 +1051,10 @@ function CommandeDetailPage() {
           </div>
 
           {/* Side column */}
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-6">
             {role !== "agent_montage" && (
               <Card>
-                <CardContent className="space-y-3 p-6">
+                <CardContent className="space-y-3 p-4 sm:p-6">
                   <CommandePaiementBlock
                     commandeId={cmd.id}
                     montant={Number(cmd.montant)}
@@ -1083,7 +1083,7 @@ function CommandeDetailPage() {
 
             {cmd.deleted_at ? (
               <Card className="border-red-500/60 bg-red-500/5">
-                <CardContent className="space-y-3 p-6">
+                <CardContent className="space-y-3 p-4 sm:p-6">
                   <div className="flex items-start gap-2">
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
                     <div className="space-y-1">
@@ -1126,7 +1126,7 @@ function CommandeDetailPage() {
                 (role === "admin" || role === "agent_vente")
               ) ? (
               <Card>
-                <CardContent className="space-y-3 p-6">
+                <CardContent className="space-y-3 p-4 sm:p-6">
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                     Changer le statut
                   </h3>
@@ -1369,9 +1369,9 @@ function Info({ label, value }: { label: string; value: string }) {
 
 function ProminentInfo({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-3">
+    <div className="min-w-0 rounded-lg border border-border bg-card p-3">
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
-      <p className="mt-1 text-base font-medium text-foreground">{value}</p>
+      <p className="mt-1 break-words text-base font-medium text-foreground">{value}</p>
     </div>
   );
 }
@@ -1440,17 +1440,17 @@ function CallClientLink({
   const waNumber = pickupWhatsappNumber(phone, whatsapp ?? null);
   const [waOpen, setWaOpen] = useState(false);
   return (
-    <div className="mt-1 flex flex-wrap items-center gap-3 text-xs">
+    <div className="mt-1 flex min-w-0 flex-col items-start gap-2 text-xs sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
       <a
         href={href}
         onClick={() => {
           if (!disabled) onCall();
         }}
-        className="inline-flex items-center gap-1 font-medium text-primary underline-offset-2 hover:underline"
+        className="inline-flex min-w-0 max-w-full items-center gap-1 font-medium text-primary underline-offset-2 hover:underline"
         aria-disabled={disabled}
       >
-        <Phone className="h-3 w-3" />
-        Appeler {displayName} — {phone}
+        <Phone className="h-3 w-3 shrink-0" />
+        <span className="break-words">Appeler {displayName} — {phone}</span>
       </a>
       {waNumber && (
         <button

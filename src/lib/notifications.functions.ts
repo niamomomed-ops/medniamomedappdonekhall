@@ -142,7 +142,7 @@ export const markNotificationRead = createServerFn({ method: "POST" })
       .from("notification_reads")
       .upsert(
         { notification_id: data.id, user_id: context.userId },
-        { onConflict: "notification_id,user_id" },
+        { onConflict: "notification_id,user_id", ignoreDuplicates: true },
       );
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -167,7 +167,7 @@ export const markAllNotificationsRead = createServerFn({ method: "POST" })
     }));
     const { error } = await sb
       .from("notification_reads")
-      .upsert(rows, { onConflict: "notification_id,user_id" });
+      .upsert(rows, { onConflict: "notification_id,user_id", ignoreDuplicates: true });
     if (error) throw new Error(error.message);
     return { ok: true, count: rows.length };
   });

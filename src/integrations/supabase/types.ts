@@ -152,18 +152,21 @@ export type Database = {
       client_felicitations: {
         Row: {
           client_id: string
+          created_at: string | null
           felicite_by: string | null
           felicite_date: string
           id: string
         }
         Insert: {
           client_id: string
+          created_at?: string | null
           felicite_by?: string | null
           felicite_date: string
           id?: string
         }
         Update: {
           client_id?: string
+          created_at?: string | null
           felicite_by?: string | null
           felicite_date?: string
           id?: string
@@ -289,6 +292,7 @@ export type Database = {
           casse_resolved_at: string | null
           casse_resolved_by: string | null
           casse_sent_at: string | null
+          casse_sent_by: string | null
           client_id: string
           created_at: string
           created_by: string | null
@@ -312,17 +316,28 @@ export type Database = {
           monture_source: string | null
           notes: string | null
           numero_commande: string | null
+          od_addition: number | null
+          od_axe: number | null
+          od_cylinder: number | null
           od_received_at: string | null
+          od_sphere: number | null
+          og_addition: number | null
+          og_axe: number | null
+          og_cylinder: number | null
           og_received_at: string | null
+          og_sphere: number | null
           ordered_eye: string | null
           prescription_id: string | null
           quantite: number | null
           reception_client_called_at: string | null
           reception_client_called_by: string | null
           reclamation_detail: Json | null
+          reclamation_lentille: string | null
           reclamation_resolved_at: string | null
           reclamation_resolved_by: string | null
           reclamation_sent_at: string | null
+          reclamation_sent_by: string | null
+          resolved_at: string | null
           reste: number | null
           status: string
           status_before_delete: string | null
@@ -341,6 +356,7 @@ export type Database = {
           casse_resolved_at?: string | null
           casse_resolved_by?: string | null
           casse_sent_at?: string | null
+          casse_sent_by?: string | null
           client_id: string
           created_at?: string
           created_by?: string | null
@@ -364,17 +380,28 @@ export type Database = {
           monture_source?: string | null
           notes?: string | null
           numero_commande?: string | null
+          od_addition?: number | null
+          od_axe?: number | null
+          od_cylinder?: number | null
           od_received_at?: string | null
+          od_sphere?: number | null
+          og_addition?: number | null
+          og_axe?: number | null
+          og_cylinder?: number | null
           og_received_at?: string | null
+          og_sphere?: number | null
           ordered_eye?: string | null
           prescription_id?: string | null
           quantite?: number | null
           reception_client_called_at?: string | null
           reception_client_called_by?: string | null
           reclamation_detail?: Json | null
+          reclamation_lentille?: string | null
           reclamation_resolved_at?: string | null
           reclamation_resolved_by?: string | null
           reclamation_sent_at?: string | null
+          reclamation_sent_by?: string | null
+          resolved_at?: string | null
           reste?: number | null
           status?: string
           status_before_delete?: string | null
@@ -393,6 +420,7 @@ export type Database = {
           casse_resolved_at?: string | null
           casse_resolved_by?: string | null
           casse_sent_at?: string | null
+          casse_sent_by?: string | null
           client_id?: string
           created_at?: string
           created_by?: string | null
@@ -416,17 +444,28 @@ export type Database = {
           monture_source?: string | null
           notes?: string | null
           numero_commande?: string | null
+          od_addition?: number | null
+          od_axe?: number | null
+          od_cylinder?: number | null
           od_received_at?: string | null
+          od_sphere?: number | null
+          og_addition?: number | null
+          og_axe?: number | null
+          og_cylinder?: number | null
           og_received_at?: string | null
+          og_sphere?: number | null
           ordered_eye?: string | null
           prescription_id?: string | null
           quantite?: number | null
           reception_client_called_at?: string | null
           reception_client_called_by?: string | null
           reclamation_detail?: Json | null
+          reclamation_lentille?: string | null
           reclamation_resolved_at?: string | null
           reclamation_resolved_by?: string | null
           reclamation_sent_at?: string | null
+          reclamation_sent_by?: string | null
+          resolved_at?: string | null
           reste?: number | null
           status?: string
           status_before_delete?: string | null
@@ -481,6 +520,7 @@ export type Database = {
       }
       correction_annexes: {
         Row: {
+          created_at: string | null
           file_name: string
           file_path: string
           file_size: number | null
@@ -491,6 +531,7 @@ export type Database = {
           uploaded_by: string | null
         }
         Insert: {
+          created_at?: string | null
           file_name: string
           file_path: string
           file_size?: number | null
@@ -501,6 +542,7 @@ export type Database = {
           uploaded_by?: string | null
         }
         Update: {
+          created_at?: string | null
           file_name?: string
           file_path?: string
           file_size?: number | null

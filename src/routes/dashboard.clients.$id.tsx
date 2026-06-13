@@ -379,12 +379,12 @@ function ClientDetailPage() {
       {loadingClient || !c ? (
         <div className="text-muted-foreground">Chargement…</div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[340px_minmax(0,1fr)]">
           {/* Left panel */}
           <Card>
-            <CardContent className="space-y-4 p-6">
-              <div>
-                <h2 className="text-2xl font-semibold leading-tight">
+            <CardContent className="space-y-4 p-4 sm:p-6">
+              <div className="min-w-0">
+                <h2 className="break-words text-xl font-semibold leading-tight sm:text-2xl">
                   {c.nom_complet}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -394,26 +394,26 @@ function ClientDetailPage() {
               </div>
 
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-muted-foreground" />
-                  <span>{c.telephone}</span>
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <Phone className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span className="break-all">{c.telephone}</span>
                   {c.whatsapp && c.whatsapp !== c.telephone && (
-                    <span className="ml-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
+                    <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
                       WA {c.whatsapp}
                     </span>
                   )}
                   {(!c.whatsapp || c.whatsapp === c.telephone) && (
-                    <span className="ml-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
+                    <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
                       WhatsApp
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
+                <div className="flex min-w-0 items-center gap-2">
+                  <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <span className="break-all">{c.email}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Cake className="h-4 w-4 text-muted-foreground" />
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <Cake className="h-4 w-4 shrink-0 text-muted-foreground" />
                   <span>
                     {new Date(c.date_naissance).toLocaleDateString("fr-FR")}
                   </span>
@@ -438,9 +438,9 @@ function ClientDetailPage() {
                     />
                   )}
                 </div>
-                <div className="flex items-start gap-2">
-                  <MapPin className="mt-0.5 h-4 w-4 text-muted-foreground" />
-                  <span>{c.adresse}</span>
+                <div className="flex min-w-0 items-start gap-2">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span className="min-w-0 break-words">{c.adresse}</span>
                 </div>
                 {c.cin && (
                   <div className="flex items-center gap-2">
@@ -449,9 +449,9 @@ function ClientDetailPage() {
                   </div>
                 )}
                 {c.mutuelle && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex min-w-0 items-start gap-2">
                     <span className="text-xs font-semibold text-muted-foreground">Mutuelle</span>
-                    <span>
+                    <span className="min-w-0 break-words">
                       {c.mutuelle === "Autre"
                         ? c.mutuelle_autre || "Autre"
                         : c.mutuelle}
@@ -478,19 +478,19 @@ function ClientDetailPage() {
           </Card>
 
           {/* Right panel */}
-          <div>
+          <div className="min-w-0">
             <Tabs defaultValue="corrections">
-              <TabsList>
-                <TabsTrigger value="corrections">
+              <TabsList className="grid h-auto w-full grid-cols-2 gap-1 overflow-x-auto sm:inline-flex sm:w-auto sm:grid-cols-none">
+                <TabsTrigger value="corrections" className="min-w-0 px-2 text-xs sm:px-3 sm:text-sm">
                   Corrections ({list.length})
                 </TabsTrigger>
-                <TabsTrigger value="commandes">
+                <TabsTrigger value="commandes" className="min-w-0 px-2 text-xs sm:px-3 sm:text-sm">
                   Commandes ({commandesList.length})
                 </TabsTrigger>
-                <TabsTrigger value="dettes">
+                <TabsTrigger value="dettes" className="min-w-0 px-2 text-xs sm:px-3 sm:text-sm">
                   Dette{dette > 0 ? ` (${dette.toFixed(2)})` : ""}
                 </TabsTrigger>
-                <TabsTrigger value="mutuelles">
+                <TabsTrigger value="mutuelles" className="min-w-0 px-2 text-xs sm:px-3 sm:text-sm">
                   Mutuelles ({(demandesMutuelles as MutuelleDemande[] | undefined)?.length ?? 0})
                 </TabsTrigger>
               </TabsList>
@@ -800,49 +800,31 @@ function ClientDetailPage() {
                     );
                   }
                   return (
-                    <div className="rounded-xl border border-border bg-card">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>N° demande</TableHead>
-                            <TableHead>Organisme</TableHead>
-                            <TableHead>Source</TableHead>
-                            <TableHead>Nb commandes</TableHead>
-                            <TableHead className="text-right">Total</TableHead>
-                            <TableHead className="text-right">Remb.</TableHead>
-                            <TableHead>Statut</TableHead>
-                            <TableHead>Livraison</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {dm.map((d) => {
-                            const nbCmds = d.demande_mutuelle_commandes?.length ?? 0;
-                            const total = (d.demande_mutuelle_commandes ?? []).reduce(
-                              (sum, c) => sum + (c.commandes?.montant ?? 0),
-                              0,
-                            );
-                            return (
-                              <TableRow key={d.id}>
-                                <TableCell className="font-mono text-xs">{d.numero_demande}</TableCell>
-                                <TableCell className="text-sm">{d.organisme ?? "—"}</TableCell>
-                                <TableCell>
-                                  <Badge variant="outline" className="text-xs capitalize">
-                                    {d.source_correction}
-                                  </Badge>
-                                </TableCell>
-                                <TableCell className="text-sm">{nbCmds}</TableCell>
-                                <TableCell className="text-right tabular-nums text-sm">
-                                  {total.toFixed(2)}
-                                </TableCell>
-                                <TableCell className="text-right tabular-nums text-sm">
-                                  {d.total_remboursement != null
-                                    ? Number(d.total_remboursement).toFixed(2)
-                                    : d.prix_monture != null || d.prix_verre != null
-                                      ? (Number(d.prix_monture ?? 0) + Number(d.prix_verre ?? 0)).toFixed(2)
-                                      : "—"}
-                                </TableCell>
-                                <TableCell>
+                    <div className="space-y-3">
+                      <div className="grid gap-3 md:hidden">
+                        {dm.map((d) => {
+                          const nbCmds = d.demande_mutuelle_commandes?.length ?? 0;
+                          const total = (d.demande_mutuelle_commandes ?? []).reduce(
+                            (sum, c) => sum + (c.commandes?.montant ?? 0),
+                            0,
+                          );
+                          const remboursement = d.total_remboursement != null
+                            ? Number(d.total_remboursement).toFixed(2)
+                            : d.prix_monture != null || d.prix_verre != null
+                              ? (Number(d.prix_monture ?? 0) + Number(d.prix_verre ?? 0)).toFixed(2)
+                              : "—";
+                          return (
+                            <Card key={d.id}>
+                              <CardContent className="space-y-3 p-4">
+                                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+                                  <div className="min-w-0">
+                                    <p className="truncate font-mono text-xs text-muted-foreground">
+                                      {d.numero_demande}
+                                    </p>
+                                    <h3 className="mt-1 break-words text-base font-semibold">
+                                      {d.organisme ?? "—"}
+                                    </h3>
+                                  </div>
                                   {d.statut === "remplie" ? (
                                     <Badge className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/25">
                                       Remplie
@@ -856,28 +838,48 @@ function ClientDetailPage() {
                                       En attente
                                     </Badge>
                                   )}
-                                </TableCell>
-                                <TableCell>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-2 text-sm">
+                                  <div className="rounded-lg border border-border p-2">
+                                    <p className="text-xs text-muted-foreground">Commandes</p>
+                                    <p className="font-semibold tabular-nums">{nbCmds}</p>
+                                  </div>
+                                  <div className="rounded-lg border border-border p-2">
+                                    <p className="text-xs text-muted-foreground">Source</p>
+                                    <Badge variant="outline" className="mt-1 text-xs capitalize">
+                                      {d.source_correction}
+                                    </Badge>
+                                  </div>
+                                  <div className="rounded-lg border border-border p-2">
+                                    <p className="text-xs text-muted-foreground">Total</p>
+                                    <p className="font-semibold tabular-nums">{total.toFixed(2)}</p>
+                                  </div>
+                                  <div className="rounded-lg border border-border p-2">
+                                    <p className="text-xs text-muted-foreground">Remb.</p>
+                                    <p className="font-semibold tabular-nums">{remboursement}</p>
+                                  </div>
+                                </div>
+
+                                <div className="rounded-lg border border-border p-2">
+                                  <p className="mb-2 text-xs text-muted-foreground">Livraison</p>
                                   <MutuelleLivraisonToggle
                                     id={d.id}
                                     livree={!!d.livree}
                                     canEdit={canWrite}
                                     statut={d.statut}
                                   />
-                                </TableCell>
-                                <TableCell className="text-right">
-                                  <div className="flex items-center justify-end gap-2">
-                                    {(justifsCountsMap[d.id] ?? 0) > 0 && (
-                                      <MutuelleJustifsLightboxButton
-                                        demandeId={d.id}
-                                        count={justifsCountsMap[d.id] ?? 0}
-                                      />
-                                    )}
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => setPrintMutuelle(d)}
-                                    >
+                                </div>
+
+                                <div className="grid gap-2">
+                                  {(justifsCountsMap[d.id] ?? 0) > 0 && (
+                                    <MutuelleJustifsLightboxButton
+                                      demandeId={d.id}
+                                      count={justifsCountsMap[d.id] ?? 0}
+                                    />
+                                  )}
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <Button size="sm" variant="outline" onClick={() => setPrintMutuelle(d)}>
                                       <Printer className="mr-1.5 h-3.5 w-3.5" /> Imprimer
                                     </Button>
                                     <Button
@@ -893,12 +895,113 @@ function ClientDetailPage() {
                                       <FileText className="mr-1.5 h-3.5 w-3.5" /> Ouvrir
                                     </Button>
                                   </div>
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                        </TableBody>
-                      </Table>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
+                      </div>
+
+                      <div className="hidden rounded-xl border border-border bg-card md:block">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>N° demande</TableHead>
+                              <TableHead>Organisme</TableHead>
+                              <TableHead>Source</TableHead>
+                              <TableHead>Nb commandes</TableHead>
+                              <TableHead className="text-right">Total</TableHead>
+                              <TableHead className="text-right">Remb.</TableHead>
+                              <TableHead>Statut</TableHead>
+                              <TableHead>Livraison</TableHead>
+                              <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {dm.map((d) => {
+                              const nbCmds = d.demande_mutuelle_commandes?.length ?? 0;
+                              const total = (d.demande_mutuelle_commandes ?? []).reduce(
+                                (sum, c) => sum + (c.commandes?.montant ?? 0),
+                                0,
+                              );
+                              return (
+                                <TableRow key={d.id}>
+                                  <TableCell className="font-mono text-xs">{d.numero_demande}</TableCell>
+                                  <TableCell className="text-sm">{d.organisme ?? "—"}</TableCell>
+                                  <TableCell>
+                                    <Badge variant="outline" className="text-xs capitalize">
+                                      {d.source_correction}
+                                    </Badge>
+                                  </TableCell>
+                                  <TableCell className="text-sm">{nbCmds}</TableCell>
+                                  <TableCell className="text-right tabular-nums text-sm">
+                                    {total.toFixed(2)}
+                                  </TableCell>
+                                  <TableCell className="text-right tabular-nums text-sm">
+                                    {d.total_remboursement != null
+                                      ? Number(d.total_remboursement).toFixed(2)
+                                      : d.prix_monture != null || d.prix_verre != null
+                                        ? (Number(d.prix_monture ?? 0) + Number(d.prix_verre ?? 0)).toFixed(2)
+                                        : "—"}
+                                  </TableCell>
+                                  <TableCell>
+                                    {d.statut === "remplie" ? (
+                                      <Badge className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/25">
+                                        Remplie
+                                      </Badge>
+                                    ) : d.statut === "livree" ? (
+                                      <Badge className="bg-blue-500/15 text-blue-700 dark:text-blue-300 hover:bg-blue-500/25">
+                                        Livrée
+                                      </Badge>
+                                    ) : (
+                                      <Badge className="bg-amber-500/15 text-amber-700 dark:text-amber-300 hover:bg-amber-500/25">
+                                        En attente
+                                      </Badge>
+                                    )}
+                                  </TableCell>
+                                  <TableCell>
+                                    <MutuelleLivraisonToggle
+                                      id={d.id}
+                                      livree={!!d.livree}
+                                      canEdit={canWrite}
+                                      statut={d.statut}
+                                    />
+                                  </TableCell>
+                                  <TableCell className="text-right">
+                                    <div className="flex items-center justify-end gap-2">
+                                      {(justifsCountsMap[d.id] ?? 0) > 0 && (
+                                        <MutuelleJustifsLightboxButton
+                                          demandeId={d.id}
+                                          count={justifsCountsMap[d.id] ?? 0}
+                                        />
+                                      )}
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => setPrintMutuelle(d)}
+                                      >
+                                        <Printer className="mr-1.5 h-3.5 w-3.5" /> Imprimer
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() =>
+                                          navigate({
+                                            to: "/dashboard/mutuelles/$id",
+                                            params: { id: d.id },
+                                          })
+                                        }
+                                      >
+                                        <FileText className="mr-1.5 h-3.5 w-3.5" /> Ouvrir
+                                      </Button>
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                          </TableBody>
+                        </Table>
+                      </div>
                     </div>
                   );
                 })()}
